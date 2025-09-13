@@ -1,37 +1,28 @@
-events {
-    worker_connections  1024;
-}
-http {
-    server {
-        listen 80;
-        server_name _;
+# Étape 1: Construire l'application (build stage)
+FROM node:18-alpine as builder
 
-        root /usr/share/nginx/html;
-        index index.html;
+# Définir le répertoire de travail
+WORKDIR /app
 
-        # Gérer les fichiers statiques comme le favicon.
-        location = /favicon.ico {
-            log_not_found off;
-            access_log off;
-        }
+# Copier les fichiers de l'application
+COPY package.json package-lock.json ./
+RUN npm install
+COPY . .
 
-        # Transférer les requêtes vers l'API back-end Symfony.
-        location /api/ {
-            proxy_pass http://woofwalks-back-prod.railway.internal:9000;
-            proxy_set_header Host $host;
-            proxy_set_header X-Real-IP $remote_addr;
-            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        }
+# Lancer la commande de build
+RUN npm run build
 
-        # Gérer les fichiers statiques (CSS, JS, images, etc.)
-        location ~* \.(css|js|jpg|jpeg|png|gif|svg|ico)$ {
-            expires 30d;
-            add_header Cache-Control "public";
-        }
+# Étape 2: Servir l'application avec Nginx
+FROM nginx:stable-alpine
 
-        # Gérer toutes les autres requêtes et rediriger vers le front-end React.
-        location / {
-            try_files $uri $uri/ /index.html;
-        }
-    }
-}
+# Copier le fichier de configuration Nginx (notez le nom mis à jour)
+COPY ./nginx-prod.conf /etc/nginx/nginx.conf
+
+# Copier les fichiers de build statiques de l'étape précédente
+COPY --from=builder /app/build /usr/share/nginx/html
+
+# Exposer le port 80 pour le trafic web
+EXPOSE 80
+
+# Démarrer le serveur Nginx
+CMD ["nginx", "-g", "daemon off;"]
