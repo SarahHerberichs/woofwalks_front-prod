@@ -15,8 +15,8 @@ RUN npm run build
 # Étape 2: Servir l'application avec Nginx
 FROM nginx:stable-alpine
 
-# Copier le fichier de configuration Nginx
-COPY ./nginx.conf /etc/nginx/nginx.conf
+# Copier le fichier de configuration Nginx (notez le nom mis à jour)
+COPY ./nginx.conf.prod /etc/nginx/nginx.conf
 
 # Copier les fichiers de build statiques de l'étape précédente
 COPY --from=builder /app/build /usr/share/nginx/html
