@@ -16,7 +16,7 @@ RUN npm run build
 FROM nginx:stable-alpine
 
 # Copier le fichier de configuration Nginx (notez le nom mis à jour)
-COPY ./nginx.conf.prod /etc/nginx/nginx.conf
+COPY ./nginx-prod.conf /etc/nginx/nginx.conf
 
 # Copier les fichiers de build statiques de l'étape précédente
 COPY --from=builder /app/build /usr/share/nginx/html
