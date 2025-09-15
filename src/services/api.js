@@ -3,7 +3,8 @@ import { setupInterceptors } from "./axiosInterceptors";
 
 //Création instance axios et sa config par défaut
 const api = axios.create({
-  baseURL: "https://woofwalksfront-prod-production.up.railway.app/api",
+  baseURL: "https://localhost:8443/api",
+    // baseURL: "https://woofwalksfront-prod-production.up.railway.app/api",
   withCredentials: true, 
 });
 //intercepteur qui affiche toast si erreur
