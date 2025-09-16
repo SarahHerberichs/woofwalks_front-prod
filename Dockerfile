@@ -10,7 +10,7 @@ RUN npm install
 COPY . .
 
 # Lancer la commande de build
-RUN npm run build
+RUN REACT_APP_API_URL=$REACT_APP_API_URL npm run build
 
 # Étape 2: Servir l'application avec Nginx
 FROM nginx:stable-alpine
