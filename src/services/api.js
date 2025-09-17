@@ -1,16 +1,10 @@
 import axios from "axios";
 import { setupInterceptors } from "./axiosInterceptors";
 
-
-const apiUrl = process.env.REACT_APP_API_URL; // Votre URL de back-end
-const isProduction = process.env.NODE_ENV === 'production';
-
-
+const apiUrl = process.env.REACT_APP_API_URL;
 //Création instance axios et sa config par défaut
-// const api = axios.create({
-//   baseURL: `${apiUrl}/api`,
 const api = axios.create({
-  baseURL: isProduction ? '/api' : `${apiUrl}/api`,
+  baseURL: `${apiUrl}/api`,
   withCredentials: true,
   // Nom du cookie généré par Symfony
   xsrfCookieName: "XSRF-TOKEN", 
