@@ -6,8 +6,10 @@ const apiUrl = process.env.REACT_APP_API_URL;
 const api = axios.create({
   baseURL: `${apiUrl}/api`,
   withCredentials: true,
-  xsrfCookieName: "XSRF-TOKEN", // Nom du cookie généré par Symfony
-  xsrfHeaderName: "X-CSRF-Token", // Nom du header que Symfony attend
+  // Nom du cookie généré par Symfony
+  xsrfCookieName: "XSRF-TOKEN", 
+  // Nom du header que Symfony attend
+  xsrfHeaderName: "X-CSRF-Token",
 });
 //intercepteur qui affiche toast si erreur
 setupInterceptors(api); 
