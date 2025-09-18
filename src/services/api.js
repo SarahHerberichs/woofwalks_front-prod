@@ -18,6 +18,7 @@
 // //   return config;
 // // });
 
+// woofwalks_front/src/services/api.js
 import axios from "axios";
 import { setupInterceptors } from "./axiosInterceptors";
 
@@ -31,6 +32,7 @@ let csrfToken = null;
 export const getCsrfToken = async () => {
   if (!csrfToken) {
     try {
+      // EN PRODUCTION : Utiliser le proxy local (/api/)
       const response = await axios.get(
         `${isProduction ? "/api" : `${apiUrl}/api`}/csrf-token`,
         {
@@ -48,7 +50,7 @@ export const getCsrfToken = async () => {
 
 // Création instance axios et sa config par défaut
 const api = axios.create({
-  baseURL: isProduction ? "/api" : `${apiUrl}/api`,
+  baseURL: isProduction ? "/api" : `${apiUrl}/api`, // ← PROXY LOCAL en production
   withCredentials: true,
 });
 
